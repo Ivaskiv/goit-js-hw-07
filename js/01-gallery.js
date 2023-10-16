@@ -3,6 +3,44 @@
 
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
+// Створення і рендер розмітки на підставі масиву даних galleryItems і наданого шаблону елемента галереї.
+//1. виберіть контейнер <ul class="gallery">, до якого ви хочете додати розмітку - отримати посилання на елемент ul.gallery:
+const gallery = document.querySelector('.gallery');
+// функція для створення розмітки
+function createGalleryMarkup(items) {
+    return items
+        .map(({ preview, original, description }) => {
+            return `
+            <li class="gallery__item">
+                <a class="gallery__link" href="${original}">
+                    <img class="gallery__image" src="${preview}" data-source="${original}" alt="${description}" />
+                </a>
+            </li>
+            `;
+        })
+        .join('');
+}
+// Реалізація делегування на ul.gallery і отримання url великого зображення
+function onGalleryItemClick(event) {
+ // У цій функції ми перевіряємо, чи клікнули на зображенні, якщо так, отримуємо URL великого зображення з атрибуту data-source
+ event.preventDefault();
+ if (event.target.nodeName !== 'IMG') {
+  return;
+ }
+// Отримай URL великого зображення
+    const largeImageUrl = event.target.dataset.source;
+    // Тепер ви можете використовувати цей URL для відкриття модального вікна
+    openModal(largeImageUrl);
+}
+
+
+
+
+
+
+
+
+ gallery.addEventListener('click', onGalleryItemClick);
 
 console.log(galleryItems);
 
