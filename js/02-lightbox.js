@@ -16,9 +16,45 @@
 // Ініціалізація бібліотеки після створення і додання елементів галереї у ul.gallery. Для цього ознайомся з документацією SimpleLightbox - насамперед секції «Usage» і «Markup».
 // Подивися в документації секцію «Options» і додай відображення підписів до зображень з атрибута alt. Нехай підпис буде знизу і з'являється через 250 мілісекунд після відкриття зображення.
 
-
-
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
+const galleryElement = document.querySelector(".gallery");
+//функція буде приймати масив і створювати HTML-розмітку для кожного елемента галереї
+function createGallery(img) {
+  return img
+    .map(({ preview, original, description }) => {
+      return `
+        <li class='gallery__item'>
+          <a class='gallery__link' href='${original}'>
+            <img 
+              class='gallery__image'
+              src='${preview}'
+              data-source='${original}'
+              alt='${description}'
+            />
+          </a>
+        </li>
+    `;
+    })
+    .join("");
+}
+galleryElement.insertAdjacentHTML("beforeend", createGallery(galleryItems));
+const lightbox = new SimpleLightbox(".gallery__link", {
+  /* options */
+  captionDelay: 250, //вказує затримку в мілісекундах перед відображенням підпису до зображення
+  captionsData: "alt", //вказує, звідки брати підписи для зображень
+});
 
-console.log(galleryItems);
+//!ТЕОРІЯ
+//https://simplelightbox.com/
+//затемнення(overlay) під час відкриття приклад: https://codepen.io/mrbadger/pen/gwpXBQ
+
+// const lightbox = new SimpleLightbox(".gallery__link", {
+//!     /*MY options */
+//     captionDelay: 250, //вказує затримку в мілісекундах перед відображенням підпису до зображення
+//     captionsData: "alt", //вказує, звідки брати підписи для зображень
+//     overlay: true, //вказує, чи слід відображати затемнення(overlay) під час відкриття
+//     navText: ["←", "→"], //вказує текст, який використовувати для кнопок навігації "Назад" і "Вперед"
+//     enableKeyboard: true, //вказує, чи слід дозволити навігацію з використанням клавіш клавіатури
+//     scrollZoom: true, //вказує, чи слід дозволити зумування (збільшення/зменшення) зображень, використовуючи прокрутку колеса миші
+//   });
